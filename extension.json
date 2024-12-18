@@ -88,24 +88,15 @@
 		"localBasePath": "",
 		"remoteExtPath": "ConfirmAccount"
 	},
-	"HookHandlers": {
-		"main": {
-			"class": "ConfirmAccountUIHooks"
-		},
-		"schema": {
-			"class": "ConfirmAccountUpdaterHooks"
-		},
-		"special": {
-			"class": "ConfirmAccountHooks"
-		}
-	},
 	"Hooks": {
-		"SkinTemplateNavigation::Universal": "main",
-		"BeforePageDisplay": "main",
-		"AdminLinks": "main",
-		"AuthChangeFormFields": "main",
-		"LoadExtensionSchemaUpdates": "schema",
-		"SpecialPageBeforeExecute": "special"
+		"SkinTemplateNavigation::Universal": "ConfirmAccountUIHooks::setRequestLoginLinks",
+		"UserCreateForm": "ConfirmAccountUIHooks::addRequestLoginText",
+		"UserLoginForm": "ConfirmAccountUIHooks::addRequestLoginText",
+		"BeforePageDisplay": "ConfirmAccountUIHooks::confirmAccountsNotice",
+		"AdminLinks": "ConfirmAccountUIHooks::confirmAccountAdminLinks",
+		"AuthChangeFormFields": "ConfirmAccountUIHooks::onAuthChangeFormFields",
+		"LoadExtensionSchemaUpdates": "ConfirmAccountUpdaterHooks::addSchemaUpdates",
+		"SpecialPageBeforeExecute": "ConfirmAccountHooks::onSpecialPageBeforeExecute"
 	},
 	"AvailableRights": [
 		"confirmaccount",
@@ -181,6 +172,9 @@
 					"enabled": true
 				},
 				"TermsOfService": {
+					"enabled": true
+				},
+				"TermsOfServiceExtra": {
 					"enabled": true
 				}
 			},

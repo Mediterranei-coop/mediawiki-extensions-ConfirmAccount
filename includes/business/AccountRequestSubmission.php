@@ -9,6 +9,7 @@ class AccountRequestSubmission {
 	protected $userName;
 	protected $realName;
 	protected $tosAccepted;
+	protected $tosextraAccepted;
 	protected $email;
 	protected $bio;
 	protected $notes;
@@ -32,6 +33,7 @@ class AccountRequestSubmission {
 		$this->userName = trim( $params['userName'] );
 		$this->realName = trim( $params['realName'] );
 		$this->tosAccepted = $params['tosAccepted'];
+		$this->tosextraAccepted = $params['tosextraAccepted'];
 		$this->email = $params['email'];
 		$this->bio = trim( $params['bio'] );
 		$this->notes = trim( $params['notes'] );
@@ -120,6 +122,12 @@ class AccountRequestSubmission {
 		}
 		# Make sure user agrees to policy here
 		if ( $formConfig['TermsOfService']['enabled'] && !$this->tosAccepted ) {
+			return [
+				'acct_request_skipped_tos',
+				$context->msg( 'requestaccount-agree' )->escaped()
+			];
+		}
+		if ( $formConfig['TermsOfServiceExtra']['enabled'] && !$this->tosextraAccepted ) {
 			return [
 				'acct_request_skipped_tos',
 				$context->msg( 'requestaccount-agree' )->escaped()

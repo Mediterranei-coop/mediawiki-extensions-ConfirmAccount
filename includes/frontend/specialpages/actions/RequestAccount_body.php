@@ -10,6 +10,7 @@ class RequestAccountPage extends SpecialPage {
 	protected $mNotes; // string
 	protected $mUrls; // string
 	protected $mToS; // bool
+	protected $mToSExtra; // bool
 	protected $mType; // integer
 	/** @var array */
 	protected $mAreas;
@@ -69,6 +70,7 @@ class RequestAccountPage extends SpecialPage {
 		$this->mUrls = $this->hasItem( 'Links' ) ? $request->getText( 'wpUrls', '' ) : '';
 		# Site terms of service...
 		$this->mToS = $this->hasItem( 'TermsOfService' ) ? $request->getBool( 'wpToS' ) : false;
+		$this->mToSExtra = $this->hasItem( 'TermsOfServiceExtra' ) ? $request->getBool( 'wpToSExtra' ) : false;
 		# Which account request queue this belongs in...
 		$this->mType = $request->getInt( 'wpType' );
 		$this->mType = isset( $wgAccountRequestTypes[$this->mType] ) ? $this->mType : 0;
@@ -246,7 +248,9 @@ class RequestAccountPage extends SpecialPage {
 			$form .= '<fieldset>';
 			$form .= '<legend>' . $this->msg( 'requestaccount-leg-tos' )->escaped() . '</legend>';
 			$form .= "<p>" . Xml::check( 'wpToS', $this->mToS, [ 'id' => 'wpToS' ] ) .
-				' <label for="wpToS">' . $this->msg( 'requestaccount-tos' )->parse() . "</label></p>\n";
+				' <label for="wpToS">' . $this->msg( 'requestaccount-tos' )->parse() . "</label></p>\n" .
+				"<p>" . Xml::check( 'wpToSExtra', $this->mToSExtra, [ 'id' => 'wpToSExtra' ] ) .
+				' <label for="wpToSExtra">' . $this->msg( 'requestaccount-tos-extra' )->parse() . "</label></p>\n";
 			$form .= '</fieldset>';
 		}
 
@@ -330,6 +334,7 @@ class RequestAccountPage extends SpecialPage {
 				'userName'                  => $name,
 				'realName'                  => $this->mRealName,
 				'tosAccepted'               => $this->mToS,
+				'tosextraAccepted'          => $this->mToSExtra,
 				'email'                     => $this->mEmail,
 				'bio'                       => $this->mBio,
 				'notes'                     => $this->mNotes,
